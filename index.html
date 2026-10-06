@@ -3,62 +3,100 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Magister</title>
+<title>Veilige opslagdemo</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;background:#eef3f7;color:#303b43}
-.top{height:7px;background:#1478b8}
-.page{min-height:calc(100vh - 7px);display:flex;align-items:center;justify-content:center;padding:24px}
-.card{width:430px;background:#fff;border-radius:7px;box-shadow:0 8px 30px #00000018;padding:42px 46px 34px;text-align:center}
-.demo{display:inline-block;margin-bottom:24px;padding:5px 10px;border-radius:20px;background:#fff3cd;color:#795b00;font-size:11px;font-weight:700;letter-spacing:.4px}
-.logo{font-size:38px;font-weight:800;letter-spacing:-2px;color:#1680bd;margin-bottom:25px}
-.logo span{font-weight:400;color:#52616b}
-h1{font-size:25px;font-weight:400;margin:0 0 8px;color:#35424a}
-.sub{font-size:14px;color:#74818a;margin-bottom:27px}
-label{display:block;text-align:left;font-size:13px;font-weight:600;margin:15px 0 6px;color:#52616b}
-input{width:100%;height:45px;border:1px solid #cbd4da;border-radius:4px;padding:0 13px;font-size:15px;outline:none}
-input:focus{border-color:#1680bd;box-shadow:0 0 0 2px #1680bd20}
-button{width:100%;height:46px;margin-top:23px;border:0;border-radius:4px;background:#1680bd;color:white;font-size:15px;font-weight:700;cursor:pointer}
-button:hover{background:#106b9e}
-.forgot{display:block;margin-top:18px;color:#1680bd;text-decoration:none;font-size:13px}
-.notice{display:none;margin-top:20px;padding:12px;border-radius:4px;background:#eef7fc;color:#38515f;font-size:12px;line-height:1.5}
-.bottom{margin-top:25px;color:#89949b;font-size:11px;line-height:1.5}
+body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;background:#eef3f7;display:flex;align-items:center;justify-content:center;color:#35424a}
+.card{width:400px;background:#fff;border-radius:7px;box-shadow:0 8px 30px #0002;padding:36px}
+.demo{display:inline-block;background:#fff3cd;color:#795b00;border-radius:20px;padding:5px 10px;font-size:11px;font-weight:bold;margin-bottom:20px}
+h1{font-size:24px;font-weight:400;margin:0 0 8px}
+.info{font-size:13px;color:#74818a;line-height:1.5;margin-bottom:22px}
+label{display:block;font-size:13px;font-weight:bold;margin:14px 0 6px}
+input{width:100%;height:44px;border:1px solid #cbd4da;border-radius:4px;padding:0 12px;font-size:15px}
+button{width:100%;height:45px;margin-top:20px;border:0;border-radius:4px;background:#1680bd;color:#fff;font-weight:bold;cursor:pointer}
+.secondary{background:#68757d;margin-top:10px}
+#result{margin-top:18px;padding:12px;border-radius:4px;background:#eef7fc;font-size:13px;display:none}
+.records{margin-top:22px;border-top:1px solid #ddd;padding-top:18px;display:none}
+.record{padding:9px;background:#f5f7f8;border-radius:4px;margin-top:8px;font-size:12px}
 </style>
 </head>
 <body>
-<div class="top"></div>
-<div class="page">
- <main class="card">
-   <div class="demo">SCHOOLDEMO · GEEN ECHTE LOGIN</div>
-   <div class="logo">Magister<span>-stijl</span></div>
-   <h1>Goedemorgen,</h1>
-   <div class="sub">Vul je school en gebruikersnaam in</div>
-
-   <form id="demoForm">
-     <label for="school">School</label>
-     <input id="school" placeholder="Bijv. Mijn School" autocomplete="off">
-     <label for="user">Je gebruikersnaam</label>
-     <input id="user" placeholder="Gebruikersnaam" autocomplete="off">
-     <button type="submit">Doorgaan</button>
-   </form>
-
-   <a class="forgot" href="#" id="fakeLink">Hulp nodig met inloggen?</a>
-   <div class="notice" id="notice">
-     Dit is een lokale demo voor school. Er worden geen gegevens opgeslagen,
-     verzonden of gecontroleerd.
-   </div>
-   <div class="bottom">Niet verbonden met Magister. Gebruik hier geen echte schoolgegevens.</div>
- </main>
+<main class="card">
+<div class="demo">VEILIGE SCHOOLDEMO</div>
+<h1>Lokale opslagdemo</h1>
+<div class="info">
+Deze demo slaat uitsluitend expliciete <b>nepgegevens</b> lokaal in deze browser op.
+Gebruik alleen <b>TESTUSER</b> en een wachtwoord dat begint met <b>DEMO-</b>.
 </div>
+
+<form id="form">
+<label for="username">Demo-gebruikersnaam</label>
+<input id="username" autocomplete="off" placeholder="TESTUSER">
+
+<label for="password">Demo-wachtwoord</label>
+<input id="password" type="password" autocomplete="off" placeholder="DEMO-12345">
+
+<button type="submit">Demo opslaan</button>
+</form>
+
+<div id="result"></div>
+
+<button class="secondary" id="show">Opgeslagen demo's bekijken</button>
+<div class="records" id="records"></div>
+</main>
+
 <script>
-document.getElementById("demoForm").addEventListener("submit",e=>{
- e.preventDefault();
- document.getElementById("notice").style.display="block";
+const form=document.getElementById("form");
+const result=document.getElementById("result");
+const records=document.getElementById("records");
+
+form.addEventListener("submit",function(e){
+  e.preventDefault();
+
+  const username=document.getElementById("username").value.trim();
+  const password=document.getElementById("password").value;
+
+  // Veiligheidsbeperking: alleen vaste nepgegevens worden opgeslagen.
+  if(username!=="TESTUSER" || !password.startsWith("DEMO-")){
+    result.textContent="Afgewezen. Gebruik TESTUSER en bijvoorbeeld DEMO-12345.";
+    result.style.display="block";
+    return;
+  }
+
+  const saved=JSON.parse(localStorage.getItem("securityDemo") || "[]");
+  saved.push({
+    username: username,
+    password: password,
+    time: new Date().toLocaleString("nl-NL")
+  });
+  localStorage.setItem("securityDemo",JSON.stringify(saved));
+
+  result.textContent="Opgeslagen! De demo-gegevens staan alleen lokaal in deze browser.";
+  result.style.display="block";
+  form.reset();
 });
-document.getElementById("fakeLink").addEventListener("click",e=>{
- e.preventDefault();
- document.getElementById("notice").style.display="block";
+
+document.getElementById("show").addEventListener("click",function(){
+  const saved=JSON.parse(localStorage.getItem("securityDemo") || "[]");
+  records.style.display="block";
+
+  if(!saved.length){
+    records.innerHTML="<div class='record'>Nog geen demo-gegevens opgeslagen.</div>";
+    return;
+  }
+
+  records.innerHTML=saved.map((x,i)=>
+    "<div class='record'><b>Demo "+(i+1)+"</b><br>Gebruiker: "+
+    escapeHtml(x.username)+"<br>Wachtwoord: "+
+    escapeHtml(x.password)+"<br>Tijd: "+escapeHtml(x.time)+"</div>"
+  ).join("");
 });
+
+function escapeHtml(value){
+  return value.replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[c]));
+}
 </script>
 </body>
 </html>
