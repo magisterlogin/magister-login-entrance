@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Magister-stijl demo</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;background:#eef3f7;color:#303b43}
+.top{height:7px;background:#1478b8}
+.page{min-height:calc(100vh - 7px);display:flex;align-items:center;justify-content:center;padding:24px}
+.card{width:430px;background:#fff;border-radius:7px;box-shadow:0 8px 30px #00000018;padding:42px 46px 34px;text-align:center}
+.demo{display:inline-block;margin-bottom:24px;padding:5px 10px;border-radius:20px;background:#fff3cd;color:#795b00;font-size:11px;font-weight:700;letter-spacing:.4px}
+.logo{font-size:38px;font-weight:800;letter-spacing:-2px;color:#1680bd;margin-bottom:25px}
+.logo span{font-weight:400;color:#52616b}
+h1{font-size:25px;font-weight:400;margin:0 0 8px;color:#35424a}
+.sub{font-size:14px;color:#74818a;margin-bottom:27px}
+label{display:block;text-align:left;font-size:13px;font-weight:600;margin:15px 0 6px;color:#52616b}
+input{width:100%;height:45px;border:1px solid #cbd4da;border-radius:4px;padding:0 13px;font-size:15px;outline:none}
+input:focus{border-color:#1680bd;box-shadow:0 0 0 2px #1680bd20}
+button{width:100%;height:46px;margin-top:23px;border:0;border-radius:4px;background:#1680bd;color:white;font-size:15px;font-weight:700;cursor:pointer}
+button:hover{background:#106b9e}
+.forgot{display:block;margin-top:18px;color:#1680bd;text-decoration:none;font-size:13px}
+.notice{display:none;margin-top:20px;padding:12px;border-radius:4px;background:#eef7fc;color:#38515f;font-size:12px;line-height:1.5}
+.bottom{margin-top:25px;color:#89949b;font-size:11px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="top"></div>
+<div class="page">
+ <main class="card">
+   <div class="demo">SCHOOLDEMO · GEEN ECHTE LOGIN</div>
+   <div class="logo">Magister<span>-stijl</span></div>
+   <h1>Goedemorgen,</h1>
+   <div class="sub">Vul je school en gebruikersnaam in</div>
+
+   <form id="demoForm">
+     <label for="school">School</label>
+     <input id="school" placeholder="Bijv. Mijn School" autocomplete="off">
+     <label for="user">Je gebruikersnaam</label>
+     <input id="user" placeholder="Gebruikersnaam" autocomplete="off">
+     <button type="submit">Doorgaan</button>
+   </form>
+
+   <a class="forgot" href="#" id="fakeLink">Hulp nodig met inloggen?</a>
+   <div class="notice" id="notice">
+     Dit is een lokale demo voor school. Er worden geen gegevens opgeslagen,
+     verzonden of gecontroleerd.
+   </div>
+   <div class="bottom">Niet verbonden met Magister. Gebruik hier geen echte schoolgegevens.</div>
+ </main>
+</div>
+<script>
+document.getElementById("demoForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ document.getElementById("notice").style.display="block";
+});
+document.getElementById("fakeLink").addEventListener("click",e=>{
+ e.preventDefault();
+ document.getElementById("notice").style.display="block";
+});
+</script>
+</body>
+</html>
