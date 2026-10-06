@@ -35,6 +35,9 @@ button:hover{background:#106c9f}
   <div class="brand">magister <small>back-up</small></div>
 </header>
 
+<main class="page">
+<section class="card">
+  <div class="demo"><b>back-up</b> — dit is een back-up</div>
 
   <h1>Inloggen</h1>
   <div class="subtitle">Log in op magister</div>
@@ -53,13 +56,14 @@ button:hover{background:#106c9f}
   <div class="result" id="result"></div>
 
   <div class="saved" id="saved">
-    <h2>Opgeslagen wachtwoord</h2>
+    <h2>Opgeslagen demo-invoer (alleen lokaal)</h2>
     <div id="records"></div>
-    
+    <button type="button" id="clear" style="background:#68757d;margin-top:10px">Lokale demo-invoer wissen</button>
+  </div>
+
   <div class="footer">Geen verbinding met Magister of een echte schoolomgeving.</div>
 </section>
 </main>
-
 
 <script>
 const form=document.getElementById("loginForm");
