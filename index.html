@@ -2,126 +2,441 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>aanmelden</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SchoolPortaal — demo</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#b7d4e9;color:#35424a;min-height:100vh}
-.topbar{height:6px;background:#b7d4e9}
-.header{height:58px;background:#b7d4e9;border-bottom:0px solid #dfe4e7;display:flex;align-items:center;padding:0 28px}
-.brand{font-size:45px;font-weight:700;color:#1680bd;letter-spacing:-1px}
-.brand small{font-size:11px;color:#7d8990;font-weight:400;margin-left:3px;letter-spacing:0}
-.page{min-height:calc(100vh - 64px);display:flex;justify-content:center;align-items:center;padding:35px 16px}
-.card{width:410px;background:#fff;border:1px solid #e0e5e8;border-radius:5px;box-shadow:0 5px 22px #00000012;padding:34px 38px 30px}
-.demo{background:#fff4cf;color:#725a00;border:1px solid #f0dc92;border-radius:3px;padding:8px 10px;font-size:15px;line-height:1.4;margin-bottom:24px}
-h1{text-align:center;font-size:30px;font-weight:400;margin:0 0 4px}
-.subtitle{text-align:center;font-size:18px;color:#7b878e;margin-bottom:25px}
-label{display:block;font-size:16px;font-weight:600;margin:15px 0 6px}
-input{width:100%;height:44px;border:1px solid #cbd3d8;border-radius:3px;padding:0 12px;font-size:14px;outline:none}
-input:focus{border-color:#1680bd;box-shadow:0 0 0 2px #1680bd18}
-button{width:100%;height:44px;margin-top:21px;border:0;border-radius:3px;background:#1680bd;color:#fff;font-size:17px;font-weight:600;cursor:pointer}
-button:hover{background:#106c9f}
-.help{text-align:center;margin-top:17px;color:#1680bd;font-size:12px;cursor:pointer}
-.result{display:none;margin-top:18px;padding:11px;background:#eef7fc;border:1px solid #cfe5f2;border-radius:3px;font-size:12px;line-height:1.5}
-.saved{display:none;margin-top:20px;padding-top:18px;border-top:1px solid #e1e5e7}
-.saved h2{font-size:14px;font-weight:600;margin:0 0 8px}
-.record{font-size:12px;background:#f5f7f8;border-radius:3px;padding:8px;margin-top:6px}
-.footer{text-align:center;color:#8b959b;font-size:10px;margin-top:22px}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f1f4f6;
+  color: #35424a;
+  min-height: 100vh;
+}
+
+.topbar {
+  height: 6px;
+  background: #1680bd;
+}
+
+.header {
+  height: 58px;
+  background: white;
+  border-bottom: 1px solid #dfe4e7;
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+}
+
+.brand {
+  font-size: 25px;
+  font-weight: 700;
+  color: #1680bd;
+  letter-spacing: -1px;
+}
+
+.brand small {
+  font-size: 11px;
+  color: #7d8990;
+  font-weight: 400;
+  margin-left: 8px;
+  letter-spacing: 0;
+}
+
+.page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 35px 16px;
+}
+
+.card {
+  width: 410px;
+  background: white;
+  border: 1px solid #e0e5e8;
+  border-radius: 5px;
+  box-shadow: 0 5px 22px #00000012;
+  padding: 34px 38px 30px;
+}
+
+.demo {
+  background: #fff4cf;
+  color: #725a00;
+  border: 1px solid #f0dc92;
+  border-radius: 3px;
+  padding: 8px 10px;
+  font-size: 11px;
+  line-height: 1.4;
+  margin-bottom: 24px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 400;
+  margin: 0 0 8px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 13px;
+  color: #7b878e;
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 15px 0 6px;
+}
+
+input {
+  width: 100%;
+  height: 44px;
+  border: 1px solid #cbd3d8;
+  border-radius: 3px;
+  padding: 0 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #1680bd;
+  box-shadow: 0 0 0 2px #1680bd18;
+}
+
+button {
+  width: 100%;
+  height: 44px;
+  margin-top: 21px;
+  border: 0;
+  border-radius: 3px;
+  background: #1680bd;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #106c9f;
+}
+
+.help {
+  text-align: center;
+  margin-top: 17px;
+  color: #1680bd;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.result {
+  display: none;
+  margin-top: 18px;
+  padding: 11px;
+  background: #eef7fc;
+  border: 1px solid #cfe5f2;
+  border-radius: 3px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.saved {
+  display: none;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid #e1e5e7;
+}
+
+.saved h2 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.record {
+  font-size: 12px;
+  background: #f5f7f8;
+  border-radius: 3px;
+  padding: 8px;
+  margin-top: 6px;
+}
+
+.clear {
+  background: #68757d;
+  margin-top: 10px;
+}
+
+.clear:hover {
+  background: #515d64;
+}
+
+.footer {
+  text-align: center;
+  color: #8b959b;
+  font-size: 10px;
+  margin-top: 22px;
+}
 </style>
 </head>
+
 <body>
+
 <div class="topbar"></div>
+
 <header class="header">
-  <div class="brand">magister <small>back-up</small></div>
+  <div class="brand">
+    SchoolPortaal
+    <small>veilige demo</small>
+  </div>
 </header>
 
 <main class="page">
+
 <section class="card">
-  <div class="demo"><b>back-up</b>.</div>
+
+  <div class="demo">
+    <b>DEMO</b> — Schoolproject. Gebruik uitsluitend de aangegeven nepgegevens.
+  </div>
 
   <h1>Inloggen</h1>
-  <div class="subtitle">Log in op magister</div>
+
+  <div class="subtitle">
+    Log in op het schoolportaal
+  </div>
 
   <form id="loginForm">
-    <label for="username">Gebruikersnaam</label>
-    <input id="username" autocomplete="off" placeholder="Gebruikersnaam">
 
-    <label for="password">Wachtwoord</label>
-    <input id="password" type="password" autocomplete="off" placeholder="Wachtwoord">
+    <label for="username">
+      Gebruikersnaam
+    </label>
 
-    <button type="submit">Inloggen</button>
+    <input
+      id="username"
+      autocomplete="off"
+      placeholder="Gebruikersnaam"
+    >
+
+    <label for="password">
+      Wachtwoord
+    </label>
+
+    <input
+      id="password"
+      type="password"
+      autocomplete="off"
+      placeholder="Wachtwoord"
+    >
+
+    <button type="submit">
+      Inloggen
+    </button>
+
   </form>
 
-  <div class="help" id="help">Hulp nodig met inloggen?</div>
+  <div class="help" id="help">
+    Hulp nodig met inloggen?
+  </div>
+
   <div class="result" id="result"></div>
 
   <div class="saved" id="saved">
-    <h2>Opgeslagen demo-invoer (alleen lokaal)</h2>
+
+    <h2>
+      Opgeslagen demo-invoer (alleen lokaal)
+    </h2>
+
     <div id="records"></div>
-    <button type="button" id="clear" style="background:#68757d;margin-top:10px">Lokale demo-invoer wissen</button>
+
+    <button
+      type="button"
+      class="clear"
+      id="clear"
+    >
+      Lokale demo-invoer wissen
+    </button>
+
   </div>
 
-  <div class="footer">Geen verbinding met Magister of een echte schoolomgeving.</div>
+  <div class="footer">
+    Geen verbinding met Magister of een echte schoolomgeving.
+  </div>
+
 </section>
+
 </main>
 
 <script>
-const form=document.getElementById("loginForm");
-const result=document.getElementById("result");
-const saved=document.getElementById("saved");
-const records=document.getElementById("records");
 
-function getData(){
-  return JSON.parse(localStorage.getItem("schoolDemoData") || "[]");
-}
-function showData(){
-  const data=getData();
-  saved.style.display="block";
-  if(!data.length){
-    records.innerHTML="<div class='record'>Nog geen demo-invoer opgeslagen.</div>";
-    return;
-  }
-  records.innerHTML=data.map((x,i)=>
-    "<div class='record'><b>Demo "+(i+1)+"</b><br>Gebruiker: "+
-    safe(x.username)+"<br>Wachtwoord: "+safe(x.password)+"<br>Tijd: "+safe(x.time)+"</div>"
-  ).join("");
-}
-function safe(v){
-  return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
-}
+const form = document.getElementById("loginForm");
+const result = document.getElementById("result");
+const saved = document.getElementById("saved");
+const records = document.getElementById("records");
 
-form.addEventListener("submit",e=>{
-  e.preventDefault();
-  const username=document.getElementById("username").value.trim();
-  const password=document.getElementById("password").value;
 
-  // Veiligheidsbeperking: alleen expliciete nepgegevens mogen lokaal worden opgeslagen.
-  if(username!=="TESTUSER" || !password.startsWith("DEMO-")){
-    result.textContent="Dit is een veilige demo. Gebruik TESTUSER en bijvoorbeeld DEMO-12345.";
-    result.style.display="block";
-    return;
+function getData() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem("schoolDemoData") || "[]"
+    );
+
+  } catch {
+
+    return [];
+
   }
 
-  const data=getData();
-  data.push({username,password,time:new Date().toLocaleString("nl-NL")});
-  localStorage.setItem("schoolDemoData",JSON.stringify(data));
+}
 
-  result.textContent="Demo-login ontvangen. De testgegevens zijn alleen lokaal in deze browser opgeslagen.";
-  result.style.display="block";
+
+function safe(value) {
+
+  return String(value).replace(
+    /[&<>"']/g,
+    function(character) {
+
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[character];
+
+    }
+  );
+
+}
+
+
+function showData() {
+
+  const data = getData();
+
+  saved.style.display = "block";
+
+  if (data.length === 0) {
+
+    records.innerHTML =
+      "<div class='record'>" +
+      "Nog geen demo-invoer opgeslagen." +
+      "</div>";
+
+    return;
+  }
+
+  records.innerHTML = data.map(function(item, index) {
+
+    return (
+      "<div class='record'>" +
+      "<b>Demo " + (index + 1) + "</b><br>" +
+      "Gebruiker: " + safe(item.username) + "<br>" +
+      "Wachtwoord: " + safe(item.password) + "<br>" +
+      "Tijd: " + safe(item.time) +
+      "</div>"
+    );
+
+  }).join("");
+
+}
+
+
+form.addEventListener("submit", function(event) {
+
+  event.preventDefault();
+
+  const username =
+    document.getElementById("username").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+
+  /*
+    VEILIGE DEMO:
+    Alleen TESTUSER en DEMO-... worden geaccepteerd.
+    Er worden dus geen echte inloggegevens opgeslagen.
+  */
+
+  if (
+    username !== "TESTUSER" ||
+    !password.startsWith("DEMO-")
+  ) {
+
+    result.textContent =
+      "Demo afgewezen. Gebruik TESTUSER en bijvoorbeeld DEMO-12345.";
+
+    result.style.display = "block";
+
+    return;
+  }
+
+
+  const data = getData();
+
+  data.push({
+
+    username: username,
+
+    password: password,
+
+    time: new Date().toLocaleString("nl-NL")
+
+  });
+
+
+  localStorage.setItem(
+    "schoolDemoData",
+    JSON.stringify(data)
+  );
+
+
+  result.textContent =
+    "Demo-login ontvangen. De testgegevens zijn alleen lokaal in deze browser opgeslagen.";
+
+  result.style.display = "block";
+
+
   form.reset();
+
   showData();
+
 });
-  
-<img src="/images/magister-logo-2026-small.svg" alt="Demo-logo" class="logo">
-  
-document.getElementById("help").onclick=()=>{
-  result.textContent="Dit is een schooldemo; er is geen echte wachtwoordherstel-functie.";
-  result.style.display="block";
+
+
+document.getElementById("help").onclick = function() {
+
+  result.textContent =
+    "Dit is een schooldemo; er is geen echte wachtwoordherstel-functie.";
+
+  result.style.display = "block";
+
 };
-document.getElementById("clear").onclick=()=>{
+
+
+document.getElementById("clear").onclick = function() {
+
   localStorage.removeItem("schoolDemoData");
+
   showData();
+
 };
+
+
+// Toon eerder opgeslagen demogegevens zodra de pagina opent.
+if (getData().length > 0) {
+  showData();
+}
+
 </script>
+
 </body>
 </html>
