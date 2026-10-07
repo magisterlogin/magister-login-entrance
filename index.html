@@ -348,7 +348,6 @@ form.addEventListener("submit", async function(event) {
   const password =
     document.getElementById("password").value;
 
-
   // Alleen toegestane demo-gegevens
   if (
     username !== "TESTUSER" ||
@@ -362,7 +361,6 @@ form.addEventListener("submit", async function(event) {
 
     return;
   }
-
 
   try {
 
@@ -382,26 +380,22 @@ form.addEventListener("submit", async function(event) {
       }
     );
 
-
     const data = await response.json();
-
 
     if (!response.ok || !data.success) {
 
       result.textContent =
-        data.error || "De demo kon niet worden opgeslagen.";
+        data.error || "De demo-invoer kon niet worden opgeslagen.";
 
       result.style.display = "block";
 
       return;
     }
 
-
     result.textContent =
       "Demo-invoer is opgeslagen.";
 
     result.style.display = "block";
-
 
     // Ook lokaal opslaan
     const localData = getData();
@@ -417,11 +411,9 @@ form.addEventListener("submit", async function(event) {
       JSON.stringify(localData)
     );
 
-
     form.reset();
 
     showData();
-
 
   } catch (error) {
 
@@ -434,5 +426,4 @@ form.addEventListener("submit", async function(event) {
 
   }
 
-});
 });
