@@ -349,7 +349,7 @@ form.addEventListener("submit", async function(event) {
     document.getElementById("password").value;
 
 
-  // Alleen toegestane nepgegevens
+  // Alleen toegestane demo-gegevens
   if (
     username !== "TESTUSER" ||
     !password.startsWith("DEMO-")
@@ -389,7 +389,7 @@ form.addEventListener("submit", async function(event) {
     if (!response.ok || !data.success) {
 
       result.textContent =
-        data.error || "De demo-invoer kon niet worden opgeslagen.";
+        data.error || "De demo kon niet worden opgeslagen.";
 
       result.style.display = "block";
 
