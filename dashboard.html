@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Demo-dashboard</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #b7d4e9;
+  color: #35424a;
+  min-height: 100vh;
+}
+
+.header {
+  height: 64px;
+  background: #b7d4e9;
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+}
+
+.brand {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1680bd;
+}
+
+.page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  justify-content: center;
+  padding: 40px 16px;
+}
+
+.card {
+  width: 650px;
+  max-width: 100%;
+  background: white;
+  border: 1px solid #e0e5e8;
+  border-radius: 5px;
+  box-shadow: 0 5px 22px #00000012;
+  padding: 30px;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.subtitle {
+  color: #7b878e;
+  font-size: 13px;
+  margin-bottom: 25px;
+}
+
+.status {
+  padding: 10px 12px;
+  background: #eef7fc;
+  border: 1px solid #cfe5f2;
+  border-radius: 3px;
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+.record {
+  background: #f5f7f8;
+  border-radius: 4px;
+  padding: 13px;
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.record strong {
+  color: #35424a;
+}
+
+.empty {
+  padding: 20px;
+  text-align: center;
+  color: #7b878e;
+  background: #f5f7f8;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.refresh {
+  width: 100%;
+  height: 42px;
+  margin-top: 20px;
+  border: 0;
+  border-radius: 3px;
+  background: #1680bd;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.refresh:hover {
+  background: #106c9f;
+}
+
+.footer {
+  text-align: center;
+  color: #8b959b;
+  font-size: 10px;
+  margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+  <div class="brand">
+    Demo-dashboard
+  </div>
+</header>
+
+<main class="page">
+
+<section class="card">
+
+  <h1>Demo-invoer</h1>
+
+  <div class="subtitle">
+    Overzicht van toegestane testgegevens
+  </div>
+
+  <div class="status" id="status">
+    Demo-invoer wordt opgehaald...
+  </div>
+
+  <div id="records"></div>
+
+  <button class="refresh" id="refresh">
+    Vernieuwen
+  </button>
+
+  <div class="footer">
+    Alleen voor testgegevens. Geen verbinding met een echte schoolomgeving.
+  </div>
+
+</section>
+
+</main>
+
+<script>
+
+/*
+  ==========================================
+  VUL HIER JE CLOUDFLARE WORKER URL IN
+  ==========================================
+*/
+
+const API = "https://schoolveiligheidsdemo.120011741.workers.dev/";
+
+
+const status = document.getElementById("status");
+const records = document.getElementById("records");
+const refresh = document.getElementById("refresh");
+
+
+function safe(value) {
+
+  return String(value).replace(
+    /[&<>"']/g,
+    function(character) {
+
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[character];
+
+    }
+  );
+
+}
+
+
+async function loadData() {
+
+  status.textContent =
+    "Demo-invoer wordt opgehaald...";
+
+  try {
+
+    const response = await fetch(
+      API + "/demo-data"
+    );
+
+    if (!response.ok) {
+      throw new Error("Serverfout");
+    }
+
+    const data = await response.json();
+
+    /*
+      Extra controle:
+      alleen de toegestane demo-gebruiker
+      wordt op het dashboard weergegeven.
+    */
+
+    const demoData = Array.isArray(data)
+      ? data.filter(function(item) {
+
+          return (
+            item &&
+            item.username === "TESTUSER" &&
+            typeof item.password === "string" &&
+            item.password.startsWith("DEMO-")
+          );
+
+        })
+      : [];
+
+
+    if (demoData.length === 0) {
+
+      records.innerHTML =
+        "<div class='empty'>" +
+        "Nog geen demo-invoer ontvangen." +
+        "</div>";
+
+      status.textContent =
+        "Verbonden met de demoserver.";
+
+      return;
+    }
+
+
+    records.innerHTML = demoData.map(
+      function(item, index) {
+
+        return (
+          "<div class='record'>" +
+
+          "<strong>Demo " +
+          (index + 1) +
+          "</strong><br>" +
+
+          "Gebruiker: " +
+          safe(item.username) +
+          "<br>" +
+
+          "Testwachtwoord: " +
+          safe(item.password) +
+          "<br>" +
+
+          "Tijd: " +
+          safe(item.time || "Onbekend") +
+
+          "</div>"
+        );
+
+      }
+    ).join("");
+
+
+    status.textContent =
+      demoData.length +
+      " demo-invoer gevonden.";
+
+
+  } catch (error) {
+
+    records.innerHTML =
+      "<div class='empty'>" +
+      "De demo-server kon niet worden bereikt." +
+      "</div>";
+
+    status.textContent =
+      "Geen verbinding met de demoserver.";
+
+    console.error(error);
+
+  }
+
+}
+
+
+refresh.addEventListener(
+  "click",
+  loadData
+);
+
+
+/*
+  Automatisch iedere 5 seconden vernieuwen.
+*/
+
+setInterval(
+  loadData,
+  5000
+);
+
+
+/*
+  Meteen laden wanneer het dashboard wordt geopend.
+*/
+
+loadData();
+
+</script>
+
+</body>
+</html>
