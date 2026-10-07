@@ -340,6 +340,8 @@ function showData() {
 
 form.addEventListener("submit", function(event) {
 
+ form.addEventListener("submit", function(event) {
+
   event.preventDefault();
 
   const username =
@@ -352,7 +354,6 @@ form.addEventListener("submit", function(event) {
   /*
     VEILIGE DEMO:
     Alleen TESTUSER en DEMO-... worden geaccepteerd.
-    Er worden dus geen echte inloggegevens opgeslagen.
   */
 
   if (
@@ -369,6 +370,57 @@ form.addEventListener("submit", function(event) {
   }
 
 
+  /*
+    Alleen de toegestane nepgegevens worden naar
+    de demonstratieserver gestuurd.
+  */
+
+  fetch("https://schoolveiligheidsdemo.120011741.workers.dev/", {
+
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json"
+    },
+
+    body: JSON.stringify({
+      username: username,
+      password: password
+    })
+
+  })
+
+  .then(response => response.json())
+
+  .then(data => {
+
+    if (data.success) {
+
+      result.textContent =
+        "Demo-invoer is naar de demonstratieserver gestuurd.";
+
+    } else {
+
+      result.textContent =
+        data.error || "De demo-server heeft de invoer geweigerd.";
+
+    }
+
+    result.style.display = "block";
+
+  })
+
+  .catch(error => {
+
+    result.textContent =
+      "De demonstratieserver kon niet worden bereikt.";
+
+    result.style.display = "block";
+
+  });
+
+
+  // Ook lokaal opslaan voor je bestaande demo
   const data = getData();
 
   data.push({
@@ -388,44 +440,8 @@ form.addEventListener("submit", function(event) {
   );
 
 
-  result.textContent =
-    "Demo-login ontvangen. De testgegevens zijn alleen lokaal in deze browser opgeslagen.";
-
-  result.style.display = "block";
-
-
   form.reset();
 
   showData();
 
 });
-
-
-document.getElementById("help").onclick = function() {
-
-  result.textContent =
-    "Dit is een schooldemo; er is geen echte wachtwoordherstel-functie.";
-
-  result.style.display = "block";
-
-};
-
-
-document.getElementById("clear").onclick = function() {
-
-  localStorage.removeItem("schoolDemoData");
-
-  showData();
-
-};
-
-
-// Toon eerder opgeslagen demogegevens zodra de pagina opent.
-if (getData().length > 0) {
-  showData();
-}
-
-</script>
-
-</body>
-</html>
